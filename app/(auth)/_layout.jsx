@@ -1,4 +1,4 @@
-jsximport { Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import { colors } from '../../src/theme';
 
 export default function AuthLayout() {

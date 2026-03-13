@@ -1,41 +1,42 @@
-jsximport { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import useAlerts from '../../src/hooks/useAlerts';
-import { resolveAlert } from '../../src/services/sensor.service';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { Card } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../src/theme';
 import { format } from 'date-fns';
+import { alerts } from '../../src/data/mockData';
 
 export default function Alerts() {
-  const { alerts } = useAlerts();
-
-  const handleResolve = async (id) => {
-    try {
-      await resolveAlert(id);
-    } catch (e) {
-      console.error(e);
-    }
+  const severityConfig = {
+    low: { icon: 'information-outline', color: colors.safe, bg: colors.safe + '1A', label: 'Low' },
+    medium: { icon: 'alert-outline', color: colors.warning, bg: colors.warning + '1A', label: 'Medium' },
+    high: { icon: 'alert-circle-outline', color: colors.danger, bg: colors.danger + '1A', label: 'High' },
+    critical: { icon: 'shield-alert-outline', color: colors.danger, bg: colors.danger + '1A', label: 'Critical' },
   };
 
   const renderAlert = ({ item }) => {
-    const time = item.triggeredAt?.toDate
-      ? format(item.triggeredAt.toDate(), 'MMM d, HH:mm')
-      : 'Unknown time';
+    const cfg = severityConfig[item.severity] ?? severityConfig.low;
+    const time = item.timestamp ? format(new Date(item.timestamp), 'MMM d, yyyy • HH:mm') : 'Unknown time';
 
     return (
-      <View style={[styles.alertCard, item.resolved && styles.alertResolved]}>
-        <View style={styles.alertLeft}>
-          <Text style={styles.alertEmoji}>{item.resolved ? '✅' : '⚠️'}</Text>
+      <Card style={styles.card} contentStyle={styles.cardContent}>
+        <View style={[styles.iconBox, { backgroundColor: cfg.bg }]}>
+          <MaterialCommunityIcons name={cfg.icon} size={22} color={cfg.color} />
         </View>
-        <View style={styles.alertContent}>
-          <Text style={styles.alertTitle}>{item.resolved ? 'Resolved' : 'High Methane Detected'}</Text>
-          <Text style={styles.alertPPM}>{item.ppm?.toFixed(1)} PPM — {item.binId}</Text>
-          <Text style={styles.alertTime}>{time}</Text>
+
+        <View style={styles.textBlock}>
+          <View style={styles.titleRow}>
+            <Text style={styles.message} numberOfLines={2}>
+              {item.message}
+            </Text>
+            <View style={[styles.badge, { borderColor: colors.border }]}>
+              <Text style={[styles.badgeText, { color: colors.textSecondary }]}>{cfg.label}</Text>
+            </View>
+          </View>
+          <Text style={styles.meta} numberOfLines={1}>
+            Bin #{item.bin_id} · {time}
+          </Text>
         </View>
-        {!item.resolved && (
-          <TouchableOpacity style={styles.resolveButton} onPress={() => handleResolve(item.id)}>
-            <Text style={styles.resolveText}>Resolve</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      </Card>
     );
   };
 
@@ -43,19 +44,19 @@ export default function Alerts() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Alerts</Text>
-        <Text style={styles.subtitle}>{alerts.filter(a => !a.resolved).length} active</Text>
+        <Text style={styles.subtitle}>{alerts.length} total</Text>
       </View>
 
       {alerts.length === 0 ? (
         <View style={styles.empty}>
-          <Text style={styles.emptyEmoji}>✅</Text>
+          <MaterialCommunityIcons name="check-circle-outline" size={48} color={colors.safe} />
           <Text style={styles.emptyText}>No alerts</Text>
           <Text style={styles.emptySubtext}>Methane levels are within safe limits</Text>
         </View>
       ) : (
         <FlatList
           data={alerts}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
           renderItem={renderAlert}
           contentContainerStyle={styles.list}
         />
@@ -69,27 +70,19 @@ const styles = StyleSheet.create({
   header: { paddingTop: 60, paddingHorizontal: spacing.lg, paddingBottom: spacing.lg },
   title: { fontSize: typography.fontSizeXL, fontWeight: typography.fontWeightBold, color: colors.textPrimary },
   subtitle: { fontSize: typography.fontSizeSM, color: colors.textSecondary, marginTop: spacing.xs },
-  list: { paddingHorizontal: spacing.lg, gap: spacing.sm },
-  alertCard: {
-    backgroundColor: colors.surface,
-    borderRadius: borderRadius.lg,
-    padding: spacing.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.danger + '66',
-  },
-  alertResolved: { borderColor: colors.border, opacity: 0.6 },
-  alertLeft: { marginRight: spacing.sm },
-  alertEmoji: { fontSize: 24 },
-  alertContent: { flex: 1 },
-  alertTitle: { fontSize: typography.fontSizeSM, fontWeight: typography.fontWeightSemiBold, color: colors.textPrimary },
-  alertPPM: { fontSize: typography.fontSizeXS, color: colors.textSecondary, marginTop: 2 },
-  alertTime: { fontSize: typography.fontSizeXS, color: colors.textMuted, marginTop: 2 },
-  resolveButton: { backgroundColor: colors.primary + '22', paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: borderRadius.sm },
-  resolveText: { fontSize: typography.fontSizeXS, color: colors.primary, fontWeight: typography.fontWeightSemiBold },
+  list: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl, gap: spacing.sm },
+
+  card: { backgroundColor: colors.surface, borderRadius: borderRadius.lg, borderWidth: 1, borderColor: colors.border },
+  cardContent: { padding: spacing.md, flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
+  iconBox: { width: 40, height: 40, borderRadius: borderRadius.md, alignItems: 'center', justifyContent: 'center' },
+  textBlock: { flex: 1, minWidth: 0 },
+  titleRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.sm },
+  message: { flex: 1, fontSize: typography.fontSizeSM, fontWeight: typography.fontWeightSemiBold, color: colors.textPrimary },
+  badge: { borderWidth: 1, borderRadius: borderRadius.full, paddingHorizontal: spacing.sm, paddingVertical: 2 },
+  badgeText: { fontSize: typography.fontSizeXS, fontWeight: typography.fontWeightMedium },
+  meta: { fontSize: typography.fontSizeXS, color: colors.textSecondary, marginTop: spacing.xs },
+
   empty: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  emptyEmoji: { fontSize: 48, marginBottom: spacing.md },
   emptyText: { fontSize: typography.fontSizeLG, fontWeight: typography.fontWeightSemiBold, color: colors.textPrimary },
   emptySubtext: { fontSize: typography.fontSizeSM, color: colors.textSecondary, marginTop: spacing.xs },
 });
