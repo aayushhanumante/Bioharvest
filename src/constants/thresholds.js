@@ -24,4 +24,6 @@ export const SENSOR_STATUS = {
  * Firebase path: /sensors/{BIN_ID}/latest
  * TODO: Make this dynamic when supporting multiple bins.
  */
-export const BIN_ID = 'bin_001';
+import { SENSOR_CONFIG } from './config';
+
+export const BIN_ID = SENSOR_CONFIG.default_bin_id;
