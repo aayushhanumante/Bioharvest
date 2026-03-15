@@ -4,7 +4,7 @@ import {
   ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { signInWithEmail, signInWithGoogle, registerWithEmail } from '../../src/services/auth.service';
+import { signInWithEmail, signInWithGoogle, registerWithEmail } from '../../src/firebase';
 import { colors, typography, spacing, borderRadius } from '../../src/theme';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

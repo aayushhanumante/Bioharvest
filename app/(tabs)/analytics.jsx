@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useMemo } from 'react';
 import { Card } from 'react-native-paper';
 import { colors, typography, spacing, borderRadius } from '../../src/theme';
-import { methaneChartData, gasCollectionData, dailyMethaneData, efficiencyData } from '../../src/data/mockData';
+import { methaneChartData, gasCollectionData, dailyMethaneData, efficiencyData } from '../../src/mockData';
 import Svg, { Polyline, Rect, Line, Text as SvgText, G } from 'react-native-svg';
 
 const { width } = Dimensions.get('window');

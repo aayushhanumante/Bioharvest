@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { Card, Divider, Switch, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import useAppStore from '../../src/store/useAppStore';
-import { signOut } from '../../src/services/auth.service';
+import useAppStore from '../../src/store';
+import { signOut } from '../../src/firebase';
 import { colors, typography, spacing, borderRadius } from '../../src/theme';
 import { useRouter } from 'expo-router';
 

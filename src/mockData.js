@@ -1,3 +1,6 @@
+// MOCK DATA — Replace imports in screens with real Firebase hooks
+// when backend is ready. All screens currently import from here.
+
 export const dustbins = [
   { id: 1, location: "City Center", methane_ppm: 120, temperature: 29, humidity: 65, pump_status: "OFF", valve_status: "CLOSED", gas_collected_liters: 12.4, last_update: "2026-03-12T08:30:00Z", lat: 28.6139, lng: 77.2090 },
   { id: 2, location: "Market Road", methane_ppm: 340, temperature: 31, humidity: 58, pump_status: "OFF", valve_status: "CLOSED", gas_collected_liters: 28.1, last_update: "2026-03-12T08:25:00Z", lat: 28.6200, lng: 77.2150 },

@@ -3,7 +3,7 @@ import { Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../src/theme';
 import { format } from 'date-fns';
-import { alerts } from '../../src/data/mockData';
+import { alerts } from '../../src/mockData';
 
 export default function Alerts() {
   const severityConfig = {

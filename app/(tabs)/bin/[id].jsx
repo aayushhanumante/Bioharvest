@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from 'react-native-paper';
-import { dustbins, methaneChartData, gasCollectionData, getStatus, statusLabel } from '../../../src/data/mockData';
+import { dustbins, methaneChartData, gasCollectionData, getStatus, statusLabel } from '../../../src/mockData';
 import { colors, typography, spacing, borderRadius } from '../../../src/theme';
 
 const statusMeta = {

@@ -4,7 +4,7 @@ import { Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { colors, typography, spacing, borderRadius } from '../../src/theme';
-import { dustbins, alerts, getStatus, statusLabel } from '../../src/data/mockData';
+import { dustbins, alerts, getStatus, statusLabel } from '../../src/mockData';
 
 const statusMeta = {
   normal: { color: colors.safe, icon: 'check-circle-outline' },
