@@ -1,4 +1,4 @@
-export * from './thresholds';
 export * from './config';
 export * from './errors';
-export * from './http';
+export * from './thresholds';
+

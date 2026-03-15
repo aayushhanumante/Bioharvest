@@ -2,10 +2,8 @@ import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
 import { BIN_ID } from '../constants/thresholds';
 
-// ─────────────────────────────────────────────
-// REALTIME DATABASE — Live sensor readings
+// REALTIME DATABASE - Live sensor readings
 // ESP32 writes to: /sensors/{BIN_ID}/latest
-// ─────────────────────────────────────────────
 
 /**
  * Subscribes to the latest sensor reading from Firebase Realtime Database.
@@ -38,10 +36,8 @@ export const fetchReadingHistory = async (limitCount = 50) => {
     .sort((a, b) => a.timestamp - b.timestamp);
 };
 
-// ─────────────────────────────────────────────
-// FIRESTORE — Alerts
+// FIRESTORE - Alerts
 // ESP32 or Cloud Function writes to: /alerts/{alertId}
-// ─────────────────────────────────────────────
 
 /**
  * Subscribes to real-time alerts from Firestore.

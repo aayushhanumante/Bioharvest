@@ -1,12 +1,13 @@
+import { SENSOR_CONFIG } from './config';
+
 /**
  * Methane concentration thresholds in PPM.
- * These values determine the status shown on bin cards and trigger alerts.
  * Adjust based on your MQ4 sensor calibration.
  */
 export const METHANE_THRESHOLDS = {
-  SAFE: 300,      // Below this → Normal (green)
-  WARNING: 500,   // Above this → Elevated (orange)
-  DANGER: 1000,   // Above this → Danger (red)
+  SAFE: 300,      // Below this -> Normal (green)
+  WARNING: 500,   // Above this -> Elevated (orange)
+  DANGER: 1000,   // Above this -> Danger (red)
 };
 
 /**
@@ -20,10 +21,8 @@ export const SENSOR_STATUS = {
 };
 
 /**
- * Hardware bin identifier — must match the key used by ESP32 in Firebase.
+ * Hardware bin identifier - must match the key used by ESP32 in Firebase.
  * Firebase path: /sensors/{BIN_ID}/latest
  * TODO: Make this dynamic when supporting multiple bins.
  */
-import { SENSOR_CONFIG } from './config';
-
-export const BIN_ID = SENSOR_CONFIG.default_bin_id;
+export const BIN_ID = SENSOR_CONFIG.DEFAULT_BIN_ID;

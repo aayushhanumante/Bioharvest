@@ -5,12 +5,12 @@ import { create } from 'zustand';
  * All Firebase data flows through here via hooks.
  *
  * State shape:
- * - user          → Firebase Auth user object
- * - latestReading → { ppm, timestamp, sensor_status }
- * - sensorStatus  → 'active' | 'offline' | 'error'
- * - alerts        → Firestore alerts array
- * - readingHistory → array of historical RTDB readings
- * - userSettings  → { thresholdPPM, notificationsEnabled }
+ * - user          -> Firebase Auth user object
+ * - latestReading -> { ppm, timestamp, sensor_status }
+ * - sensorStatus  -> 'active' | 'offline' | 'error'
+ * - alerts        -> Firestore alerts array
+ * - readingHistory -> array of historical RTDB readings
+ * - userSettings  -> { thresholdPPM, notificationsEnabled }
  */
 const useAppStore = create((set) => ({
   // Auth

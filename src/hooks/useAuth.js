@@ -1,51 +1,28 @@
-// src/hooks/useAuth.js - Auth hook
 import { useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../services/firebase';
-import { authRepository } from '../repositories';
+import auth from '@react-native-firebase/auth';
 import useAppStore from '../store/useAppStore';
+import { signInWithEmail, signInWithGoogle, signOut } from '../services/auth.service';
 
+/**
+ * Auth hook — wraps Firebase auth state and auth service methods.
+ * Used by: Login screen, Settings screen, app layout
+ */
 export const useAuth = () => {
-  const { user, isAuthenticated, isLoadingAuth, authError, setUser, setLoadingAuth, setAuthError } = useAppStore();
+  const user = useAppStore((s) => s.user);
+  const setUser = useAppStore((s) => s.setUser);
 
   useEffect(() => {
-    setLoadingAuth(true);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoadingAuth(false);
+    const unsubscribe = auth().onAuthStateChanged((firebaseUser) => {
+      setUser(firebaseUser);
     });
-
-    return () => unsubscribe();
-  }, [setUser, setLoadingAuth]);
-
-  const login = async (credentials) => {
-    try {
-      setAuthError(null);
-      const user = await authRepository.login(credentials);
-      setUser(user);
-      return user;
-    } catch (error) {
-      setAuthError(error);
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await authRepository.logout();
-      setUser(null);
-    } catch (error) {
-      setAuthError(error);
-      throw error;
-    }
-  };
+    return unsubscribe;
+  }, []);
 
   return {
     user,
-    isAuthenticated,
-    isLoading: isLoadingAuth,
-    error: authError,
-    login,
-    logout,
+    isAuthenticated: !!user,
+    signInWithEmail,
+    signInWithGoogle,
+    signOut,
   };
 };

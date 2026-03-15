@@ -1,16 +1,12 @@
-// src/constants/config.js - Configuration constants
-export const API_CONFIG = {
-  useFirebase: process.env.EXPO_PUBLIC_USE_FIREBASE !== 'false',
-  baseURL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000',
-  timeout: 30000,
-  retries: 3,
-};
-
+// Sensor configuration
 export const SENSOR_CONFIG = {
-  default_bin_id: process.env.EXPO_PUBLIC_BIN_ID || 'bin_001',
-  max_bins: 10,
+  DEFAULT_BIN_ID: 'bin_001',
+  MAX_BINS: 10,
+  OFFLINE_TIMEOUT_MS: 30000, // ms before sensor considered offline
 };
 
+// Alert configuration
 export const ALERT_CONFIG = {
-  auto_acknowledge_threshold: 24 * 60 * 60 * 1000, // 24 hours
+  AUTO_ACKNOWLEDGE_AFTER_MS: 24 * 60 * 60 * 1000, // 24 hours
+  MAX_ALERTS_DISPLAYED: 20,
 };
